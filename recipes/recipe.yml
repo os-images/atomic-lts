@@ -11,16 +11,16 @@ modules:
   - type: rpm-ostree
     repos:
       - https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.12/repo/fedora-%OS_VERSION%/kwizart-kernel-longterm-6.12-fedora-%OS_VERSION%.repo
-    remove:
-      - kernel
-      - kernel-core
-      - kernel-modules
-      - kernel-modules-extra
     install:
       - kernel-longterm
       - kernel-longterm-core
       - kernel-longterm-modules
       - kernel-longterm-modules-extra
+    remove:
+      - kernel
+      - kernel-core
+      - kernel-modules
+      - kernel-modules-extra
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
 
