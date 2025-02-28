@@ -1,44 +1,26 @@
----
-# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-# image will be published to ghcr.io/<user>/<name>
-name: template
-# description will be included in the image's metadata
-description: This is my personal OS image.
+name: kinoite-lts
 
-# the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/silverblue-main
-image-version: 41 # latest is also supported if you want new updates ASAP
+description: Fedora Kinoite with the longterm kernel
 
-# module configuration, executed in order
-# you can include multiple instances of the same module
+base-image: quay.io/fedora-ostree-desktops/kinoite
+
+image-version: 41
+
 modules:
-  - type: files
-    files:
-      - source: system
-        destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
 
   - type: rpm-ostree
     repos:
-      - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
-    install:
-      - micro
-      - starship
+      - https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.12/repo/fedora-%OS_VERSION%/kwizart-kernel-longterm-6.12-fedora-%OS_VERSION%.repo
     remove:
-      # example: removing firefox (in favor of the flatpak)
-      # "firefox" is the main package, "firefox-langpacks" is a dependency
-      - firefox
-      - firefox-langpacks # also remove firefox dependency (not required for all packages, this is a special case)
-
-  - type: default-flatpaks
-    notify: true # Send notification after install/uninstall is finished (true/false)
-    system:
-      # If no repo information is specified, Flathub will be used by default
-      install:
-        - org.mozilla.firefox
-        - org.gnome.Loupe
-      remove:
-        - org.gnome.eog
-    user: {} # Also add Flathub user repo, but no user packages
+      - kernel
+      - kernel-core
+      - kernel-modules
+      - kernel-modules-extra
+    install:
+      - kernel-longterm
+      - kernel-longterm-core
+      - kernel-longterm-modules
+      - kernel-longterm-modules-extra
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
 
